@@ -6,6 +6,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HomePageTests {
@@ -43,5 +45,30 @@ public class HomePageTests {
 
         assertEquals(BASE_URL + webFormUrl, currentUrl);
         assertEquals("Web form", title.getText());
+    }
+
+    @Test
+    void openAllLinksTest() {
+        int linksCount = 0;
+        driver.get(BASE_URL);
+        List<WebElement> chapters = driver.findElements(By.xpath("//h5[@class='card-title']")); //cssSelector("h5.card-title")
+        for (WebElement chapter : chapters) {
+            System.out.println(chapter.getText());
+            List<WebElement> links = chapter.findElements(By.xpath("./../a"));
+            linksCount += links.size();
+            for (WebElement link : links) {
+                System.out.println(link.getText());
+   //             link.click();
+   //             driver.navigate().back();
+            }
+        }
+        assertEquals(6, chapters.size());
+        assertEquals(27, linksCount);
+    }
+
+    @Test
+    void classesTest() {
+        List<WebElement> links = driver.findElements(By.cssSelector(".btn.btn-outline-primary.mb-2"));
+        assertEquals(27, links.size());
     }
 }
