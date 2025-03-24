@@ -5,18 +5,21 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HomePageTests {
-    WebDriver driver;
+    private WebDriver driver;
+    private Actions actions;
     private static final String BASE_URL = "https://bonigarcia.dev/selenium-webdriver-java/";
 
     @BeforeEach
     void setup() {
         driver = new ChromeDriver();
+        actions = new Actions(driver);
         driver.get(BASE_URL);
         driver.manage().window().maximize();
     }
@@ -58,8 +61,8 @@ public class HomePageTests {
             linksCount += links.size();
             for (WebElement link : links) {
                 System.out.println(link.getText());
-   //             link.click();
-   //             driver.navigate().back();
+                actions.moveToElement(link).click().perform();
+                driver.navigate().back();
             }
         }
         assertEquals(6, chapters.size());

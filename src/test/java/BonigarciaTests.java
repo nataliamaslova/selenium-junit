@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 
 import java.time.Duration;
 import java.util.List;
@@ -16,11 +17,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BonigarciaTests {
     private WebDriver driver;
+    private Actions actions;
     private static final String BASE_URL = "https://bonigarcia.dev/selenium-webdriver-java/";
 
     @BeforeAll
     void setup() {
         driver = new ChromeDriver();
+        actions = new Actions(driver);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
     }
@@ -49,10 +52,12 @@ public class BonigarciaTests {
         WebElement linkInChapter = driver.findElement(By
                 .xpath("//h5[text()='" + chapterName +
                         "']/../a[contains(@href, '" + linkUrl + "')]"));
-        linkInChapter.click();
+
+        actions.moveToElement(linkInChapter).click().perform();
 
         String actualUrl = driver.getCurrentUrl();
-        WebElement actualHeaderName = driver.findElement(By.className("display-6"));
+        WebElement actualHeaderName = driver.findElement(By.cssSelector(".display-6"));
+        actions.moveToElement(actualHeaderName).perform();
 
         assertAll(
                 () -> assertEquals(BASE_URL + linkUrl, actualUrl, "Url doesn't match"),
