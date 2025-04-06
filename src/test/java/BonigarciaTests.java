@@ -46,7 +46,7 @@ public class BonigarciaTests {
     @Order(2)
     @CsvFileSource(resources = "/testdata.csv", numLinesToSkip = 1)
     void openLinkTest(String chapterName,
-                      String linkUrl, String expectedHeaderName) {
+                      String linkUrl, String expectedHeaderName) throws InterruptedException {
 
         driver.get(BASE_URL);
         WebElement linkInChapter = driver.findElement(By
@@ -56,6 +56,9 @@ public class BonigarciaTests {
         actions.moveToElement(linkInChapter).click().perform();
 
         String actualUrl = driver.getCurrentUrl();
+
+        // TODO: fix with correct wait
+        Thread.sleep(500);
         WebElement actualHeaderName = driver.findElement(By.cssSelector(".display-6"));
         actions.moveToElement(actualHeaderName).perform();
 

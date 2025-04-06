@@ -29,8 +29,8 @@ public class SeleniumActionTests {
     }
 
     @AfterEach
-    void close() {
-        driver.close();
+    void tearDown() {
+        driver.quit();
     }
 
     @Test
@@ -171,6 +171,7 @@ public class SeleniumActionTests {
         fileUpload.sendKeys(absolutePath);
         Thread.sleep(5000);
         WebElement submit = driver.findElement(By.xpath("//button[text()='Submit']"));
+        actions.moveToElement(submit).perform();
         submit.click();
         Thread.sleep(5000);
         assertTrue(driver.getCurrentUrl().contains("hw5_locators.txt"));
